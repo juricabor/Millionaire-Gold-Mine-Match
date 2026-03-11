@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Millionaire Gold Mine Match</title>
+  <meta name="description" content="Dig deep, match gems, and strike it rich! Millionaire Gold Mine Match is the ultimate match-3 puzzle adventure.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@400;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+      background-color: #1a0a00;
+      background-image: radial-gradient(ellipse at top, #3d1800 0%, #1a0a00 70%);
+      color: #f5dfa0;
+      min-height: 100vh;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1a0a00; }
+    ::-webkit-scrollbar-thumb { background: #c87000; border-radius: 4px; }
+
+    /* ── Header / Nav ── */
+    header {
+      text-align: center;
+      padding: 32px 16px 24px;
+    }
+
+    .logo {
+      display: inline-block;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.8rem);
+      color: #ffe066;
+      text-shadow: 0 2px 0 #7a4400, 0 4px 12px rgba(0,0,0,0.6);
+      background: linear-gradient(180deg, #c87000 0%, #7a3d00 100%);
+      border: 3px solid #ffe066;
+      border-radius: 18px;
+      padding: 16px 32px;
+      letter-spacing: 1.5px;
+      box-shadow: 0 5px 0 #3d1800, 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .logo span {
+      display: block;
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(0.75rem, 2vw, 1rem);
+      font-weight: 700;
+      color: #ffd580;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: none;
+      margin-top: 4px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffe066 0%, #c87000 100%);
+      color: #3d1800;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      border-radius: 999px;
+      padding: 6px 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .hero h1 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: clamp(2rem, 7vw, 3.6rem);
+      color: #ffe066;
+      text-shadow: 0 3px 0 #7a4400, 0 6px 18px rgba(0,0,0,0.6);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #f0d890;
+      line-height: 1.7;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+
+    /* ── Download buttons ── */
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 14px;
+      border: 2px solid #ffe066;
+      box-shadow: 0 4px 0 #3d1800, 0 6px 14px rgba(0,0,0,0.5);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover, .btn:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #3d1800, 0 8px 20px rgba(0,0,0,0.5);
+      outline: none;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 0 #3d1800, 0 3px 8px rgba(0,0,0,0.4);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #c87000 0%, #7a3d00 100%);
+      color: #ffe066;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(180deg, #2a1200 0%, #1a0a00 100%);
+      color: #ffd580;
+    }
+
+    .btn svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .btn-label small {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 2px solid #7a4400;
+      max-width: 860px;
+      margin: 0 auto 40px;
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: clamp(1.3rem, 4vw, 1.9rem);
+      color: #ffe066;
+      text-shadow: 0 2px 0 #7a4400, 0 3px 10px rgba(0,0,0,0.5);
+      background: linear-gradient(180deg, #b86500 0%, #7a3d00 100%);
+      border: 2px solid #ffe066;
+      border-radius: 14px;
+      padding: 12px 24px;
+      text-align: center;
+      box-shadow: 0 4px 0 #3d1800, 0 5px 12px rgba(0,0,0,0.4);
+      max-width: 860px;
+      margin: 0 auto 28px;
+    }
+
+    /* ── Features grid ── */
+    .features {
+      max-width: 860px;
+      margin: 0 auto 48px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: rgba(255, 200, 80, 0.07);
+      border-left: 4px solid #c87000;
+      border-radius: 0 14px 14px 0;
+      padding: 20px 18px;
+    }
+
+    .feature-card .icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-card h3 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.05rem;
+      color: #ffe066;
+      text-shadow: 0 1px 0 #7a4400;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .feature-card p {
+      font-size: 0.91rem;
+      line-height: 1.6;
+      color: #f0d890;
+    }
+
+    /* ── How-to-play ── */
+    .steps {
+      max-width: 860px;
+      margin: 0 auto 48px;
+      padding: 0 16px;
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: rgba(255, 200, 80, 0.05);
+      border-left: 4px solid #5a9a00;
+      border-radius: 0 14px 14px 0;
+      padding: 16px 18px;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #c87000 0%, #7a3d00 100%);
+      border: 2px solid #ffe066;
+      border-radius: 50%;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1rem;
+      color: #ffe066;
+      text-shadow: 0 1px 0 #3d1800;
+      box-shadow: 0 2px 0 #3d1800;
+    }
+
+    .step-text h4 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 0.95rem;
+      color: #ffe066;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .step-text p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #f0d890;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 16px;
+      border-top: 2px solid #7a4400;
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: #a07840;
+      margin-bottom: 8px;
+    }
+
+    footer a {
+      color: #7de87d;
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 1px dotted #5a9a00;
+    }
+
+    footer a:hover, footer a:active {
+      color: #ffe066;
+      border-bottom-color: #ffe066;
+    }
+
+    footer .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="logo">
+      ⛏️ Millionaire Gold Mine Match
+      <span>by AmberHive Games</span>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-badge">🏆 Match &amp; Win Big!</div>
+    <h1>Dig Deep.<br>Match Gems.<br>Strike It Rich!</h1>
+    <p>
+      Blast through tunnels, match glittering gems and golden nuggets, and
+      build your fortune in this thrilling match-3 puzzle adventure!
+    </p>
+    <div class="cta-group">
+      <a href="https://play.google.com/store" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+        <!-- Google Play icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3.18 23.76a2 2 0 0 0 2.1-.22l12.2-7.04-2.87-2.87L3.18 23.76zm-1.1-20.8A2 2 0 0 0 2 4.02v15.96a2 2 0 0 0 .08 1.06l.07.07 8.94-8.93v-.21L2.08 2.96zm16.8 9.62-3.05-1.76-3.17 3.17 3.17 3.17 3.06-1.77a2 2 0 0 0 0-2.81zM5.28.46a2 2 0 0 0-2.1-.22L14.61 11.7 17.48 8.85 5.28.46z"/>
+        </svg>
+        <span class="btn-label">
+          <small>Get it on</small>
+          Google Play
+        </span>
+      </a>
+      <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+        <!-- Apple icon -->
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        <span class="btn-label">
+          <small>Download on the</small>
+          App Store
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── Features ── -->
+  <div class="section-title">✨ Game Features</div>
+  <div class="features">
+    <div class="feature-card">
+      <div class="icon">💎</div>
+      <h3>Gem Matching Magic</h3>
+      <p>Swap and match colorful gems, golden nuggets and precious stones to clear the board and earn massive rewards.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⛏️</div>
+      <h3>Mine Adventures</h3>
+      <p>Journey through dozens of unique mine shafts, each packed with challenging puzzles and hidden treasures.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">💰</div>
+      <h3>Build Your Fortune</h3>
+      <p>Collect gold coins and rare gems to upgrade your mining camp and unlock new worlds underground.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🏆</div>
+      <h3>Compete &amp; Win</h3>
+      <p>Climb the global leaderboard, complete weekly tournaments and prove you have what it takes to be a millionaire.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🎁</div>
+      <h3>Daily Rewards</h3>
+      <p>Log in every day to claim free boosters, mystery chests and exclusive limited-time prizes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🌍</div>
+      <h3>Play Anywhere</h3>
+      <p>Available on Android and iOS — enjoy seamless cross-platform gameplay wherever you go, online or offline.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── How to Play ── -->
+  <div class="section-title">🎮 How to Play</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <h4>Tap to Match</h4>
+        <p>Swap adjacent gems to create a line of 3 or more matching pieces and watch them explode for points.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <h4>Trigger Power-Ups</h4>
+        <p>Match 4 or more to create powerful boosters — dynamite, gold picks and gem bombs — that clear huge sections of the board.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <h4>Complete the Goal</h4>
+        <p>Each level has a unique objective: collect enough gold, clear rock layers, or rescue trapped miners to advance.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <h4>Upgrade &amp; Explore</h4>
+        <p>Use your earnings to upgrade tools and unlock new mine sections filled with richer veins and tougher challenges.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>© 2026 AmberHive Games. All rights reserved.</p>
+    <p>Questions? Contact us at <a href="mailto:borkovicjurica@gmail.com">borkovicjurica@gmail.com</a></p>
+    <nav class="footer-links" aria-label="Footer links">
+      <a href="https://juricabor.github.io/Millionaire-Mine-Match-privacy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+    </nav>
+  </footer>
+
+</body>
+</html>
